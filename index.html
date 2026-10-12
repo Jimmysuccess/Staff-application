@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Application | ALPHA HUB</title>
+    <style>
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --bg: #0f1419;
+            --card: #1a1f26;
+            --text: #e6e6e6;
+            --muted: #a0a0a0;
+            --border: #2a3038;
+            --input: #222831;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #1a3a2a 0%, #0f1419 100%);
+            border-bottom: 2px solid var(--primary);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+        }
+        header h1 { color: var(--primary); font-size: 2.3rem; }
+        header p { color: var(--muted); margin-top: 0.4rem; }
+        .container { max-width: 800px; margin: 2rem auto; padding: 0 1.2rem 3rem; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        label { display: block; margin-bottom: 0.4rem; font-weight: 600; }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 0.9rem;
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        textarea { min-height: 90px; resize: vertical; }
+        .section { display: none; }
+        .section.active { display: block; }
+        .file-area {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 1.2rem;
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+        .file-area input { margin-top: 0.6rem; }
+        .platforms { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1rem; }
+        .platforms label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--input);
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            font-weight: normal;
+            margin: 0;
+            cursor: pointer;
+        }
+        button {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 0.9rem 1.8rem;
+            font-size: 1.05rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover { background: var(--primary-dark); color: #fff; }
+        .note { font-size: 0.85rem; color: var(--muted); margin-top: -0.6rem; margin-bottom: 1rem; }
+        footer { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 1rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Staff Application</h1>
+        <p>ALPHA HUB</p>
+    </header>
+
+    <div class="container">
+        <form id="staffForm" action="https://formspree.io/f/xzedvwae" method="POST" enctype="multipart/form-data">
+            <div class="card">
+                <label for="discord">Discord Username *</label>
+                <input type="text" id="discord" name="discord" placeholder="e.g. YourName#0000 or username" required>
+
+                <label for="role">Position Applying For *</label>
+                <select id="role" name="role" required onchange="showSection()">
+                    <option value="">-- Select a role --</option>
+                    <option value="builder">Builder</option>
+                    <option value="developer">Developer</option>
+                    <option value="advertiser">Advertiser</option>
+                </select>
+            </div>
+
+            <!-- BUILDER -->
+            <div id="builder" class="section card">
+                <h2 style="color:#4CAF50; margin-bottom:1rem;">Builder Application</h2>
+                <label>Links or descriptions of builds you’ve made</label>
+                <textarea name="builder_links" placeholder="Paste links to screenshots, world downloads, or describe your builds..."></textarea>
+
+                <label>Upload build screenshots / videos / files</label>
+                <div class="file-area">
+                    Drop or select images, videos, or schematic/world files<br>
+                    <input type="file" name="builder_files" multiple accept="image/*,video/*,.schem,.schematic,.zip,.mcworld">
+                </div>
+                <p class="note">Supported: images, videos, .schem, .zip, etc.</p>
+            </div>
+
+            <!-- DEVELOPER -->
+            <div id="developer" class="section card">
+                <h2 style="color:#4CAF50; margin-bottom:1rem;">Developer Application</h2>
+                <label for="devType">Specialization *</label>
+                <select id="devType" name="dev_specialization">
+                    <option value="">-- Choose --</option>
+                    <option value="website">Website Developer</option>
+                    <option value="discord-bot">Discord Bots Developer</option>
+                    <option value="mods">Mods Developer</option>
+                    <option value="modpack">Mods & Pack Developer</option>
+                    <option value="plugins">Plugins / Logic Developer</option>
+                </select>
+
+                <label>Links to previous work</label>
+                <textarea name="dev_links" placeholder="GitHub, portfolio, mod pages, bot invite links, etc."></textarea>
+
+                <label>Screenshots or proof of work (PNG/JPG)</label>
+                <div class="file-area">
+                    Upload images of your projects<br>
+                    <input type="file" name="dev_images" multiple accept="image/*">
+                </div>
+            </div>
+
+            <!-- ADVERTISER -->
+            <div id="advertiser" class="section card">
+                <h2 style="color:#4CAF50; margin-bottom:1rem;">Advertiser Application</h2>
+                <label>Platforms you use (select up to 3)</label>
+                <div class="platforms">
+                    <label><input type="checkbox" name="platforms" value="YouTube"> YouTube</label>
+                    <label><input type="checkbox" name="platforms" value="TikTok"> TikTok</label>
+                    <label><input type="checkbox" name="platforms" value="Instagram"> Instagram</label>
+                    <label><input type="checkbox" name="platforms" value="Facebook"> Facebook</label>
+                    <label><input type="checkbox" name="platforms" value="Reddit"> Reddit</label>
+                </div>
+                <p class="note">Select 1–3 platforms.</p>
+
+                <label>Your social media links</label>
+                <textarea name="social_links" placeholder="Paste the links to the accounts you selected above (one per line)"></textarea>
+            </div>
+
+            <div class="card">
+                <label>Anything else you want to add?</label>
+                <textarea name="extra" placeholder="Optional message to the staff team..."></textarea>
+                <button type="submit">Submit Application</button>
+            </div>
+        </form>
+    </div>
+
+    <footer>
+        © 2026 ALPHA HUB • Applications are reviewed by MOD AFO
+    </footer>
+
+    <script>
+        function showSection() {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            const role = document.getElementById('role').value;
+            if (role) document.getElementById(role).classList.add('active');
+        }
+    </script>
+</body>
+</html>
